@@ -1,10 +1,10 @@
 $(document).ready(function () {
-    // Init
+
     $('.image-section').hide();
     $('.loader').hide();
     $('#result').hide();
 
-    // Upload Preview
+    //预览
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -28,11 +28,11 @@ $(document).ready(function () {
     $('#btn-predict').click(function () {
         var form_data = new FormData($('#upload-file')[0]);
 
-        // Show loading animation
+        // 加载动画
         $(this).hide();
         $('.loader').show();
 
-        // Make prediction by calling api /predict
+        // 调用 /predict
         $.ajax({
             type: 'POST',
             url: '/predict',
@@ -42,10 +42,10 @@ $(document).ready(function () {
             processData: false,
             async: true,
             success: function (data) {
-                // Get and display the result
+                // 得到结果并显示
                 $('.loader').hide();
                 $('#result').fadeIn(600);
-                $('#result').text(' Predicting Outcomes:  ' + data);
+                $('#result').text('识别结果:  ' + data);
                 console.log('Success!');
             },
         });
