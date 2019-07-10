@@ -1,0 +1,79 @@
+from __future__ import division, print_function
+import cv2
+import os
+import numpy as np
+# Flask utils
+from flask import Flask, redirect, url_for, request, render_template
+
+from keras.models import load_model
+
+app = Flask(__name__)
+
+
+IMAGE_WIDTH=128
+IMAGE_HEIGHT=128
+IMAGE_SIZE=(IMAGE_WIDTH, IMAGE_HEIGHT)
+
+
+#img_path = 'C:/Users\赵震洋\PycharmProjects\catdog/uploads'
+img_path = 'D:/catdog/uploads'
+#model_path = 'D:/catdog/model.h5'
+#model = load_model(model_path)
+
+
+
+@app.route('/', methods=['GET'])
+def index():
+    # Main page
+    return render_template('index.html')
+
+@app.route('/predict', methods=['GET', 'POST'])
+def upload():
+
+    if request.method == 'POST':
+        # Get the file from post request
+        f = request.files['file']
+
+        #basepath = os.path.dirname(__file__)
+        #file_path = os.path.join(
+            #basepath, 'uploads', secure_filename(f.filename))
+        #f.save(file_path)
+        img_path = 'D:/catdog/uploads'
+        model_path = 'D:/catdog/model.h5'
+        model = load_model(model_path)
+
+        img_path = os.path.join(img_path, f.filename)
+        f.save(img_path)
+
+        img_path_data = cv2.imread((img_path))
+        img_data = cv2.resize(img_path_data, IMAGE_SIZE)  # 重新设置图片尺寸
+        img_data = (img_data / 255)
+
+        one_data =np.array(img_data)
+        one_data = one_data.reshape((1, (one_data.shape)[0], (one_data.shape)[1], 3))
+
+        try:
+            predicted_one = model.predict(one_data)
+        except:
+            return model_path
+        try:
+            predicted_one = np.argmax(predicted_one, axis=-1)
+
+            result_cat = 'this is a cat!'
+            result_dog = 'this is a dog!'
+        except:
+            return '223'
+        if predicted_one== 0:
+            return result_cat
+        else:
+            return result_dog
+    return None
+
+
+
+if __name__ == '__main__':
+    app.run(debug= True)
+
+
+
+
