@@ -10,7 +10,8 @@ from keras.models import load_model
 
 app = Flask(__name__)
 
-
+#IMAGE_WIDTH=112
+#IMAGE_HEIGHT=112
 IMAGE_WIDTH=128
 IMAGE_HEIGHT=128
 IMAGE_SIZE=(IMAGE_WIDTH, IMAGE_HEIGHT)
@@ -19,6 +20,7 @@ IMAGE_SIZE=(IMAGE_WIDTH, IMAGE_HEIGHT)
 #img_path = 'C:/Users\赵震洋\PycharmProjects\catdog/uploads'
 img_path = 'D:/catdog/uploads'
 model_path = 'D:/catdog/model.h5'
+#model_path = 'D:/catdog/cats_dogs_CNN_1.h5'
 
 #model = load_model(model_path)
 
